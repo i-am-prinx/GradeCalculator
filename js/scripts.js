@@ -12,16 +12,39 @@ let points = []   // points gotten for each subject grade will be inserted into 
 // whenever the text box is focused
 
 document.getElementById("mathInput").onfocus = function( ) {
+      main( "mathInput", "mathGrade")
+}
+
+// when the text box is blurred( no longer focused)
+document.getElementById("mathInput").onblur = function( ){
+      // set point based on grade gotten
+      main("mathInput", "mathGrade")
+      getPoint("mathGrade");
+
+}
+
+
+
+
+
+
+
+
+// main function that handles all computation
+// requires subject input id, and subject grade label
+// required id should be present or available within DOM
+
+function main( subInputId, subGradeId){
 
       // get whatever value that's in the text box
-      value = getBoxValue("mathInput");
+      value = getBoxValue(subInputId);
 
 
       // whenever there is an insertion
-      document.getElementById("mathInput").oninput = function( ){
+      document.getElementById(subInputId).oninput = function( ){
 
           // compare the value extracted from the text box with the old value
-          tmpValue = getBoxValue("mathInput");
+          tmpValue = getBoxValue(subInputId);
           value = compareValue(value, tmpValue);
           console.log( "new value: " + value);      // testing ( test print )
 
@@ -36,25 +59,9 @@ document.getElementById("mathInput").onfocus = function( ) {
           // set label based on the value of flag
           // when flag is false, there is a error message
           // when flag is true, there is no error message
-          setGradeLabel( "mathGrade" ) ;
+          setGradeLabel( subGradeId ) ;
 
       }
-
-}
-
-// when the text box is blurred( no longer focused)
-document.getElementById("mathInput").onblur = function( ){
-
-      // get whatever value that's in the text box
-      // compare new inserted value with old value
-      // check if value contains any alphabet
-      // set grade label
-      tmpValue = getBoxValue("mathInput");
-      value = compareValue(value, tmpValue);
-      validateValue( value );
-      setGradeLabel( "mathGrade" ) ;
-      getPoint("mathGrade");
-
 }
 
 
@@ -70,6 +77,8 @@ function getBoxValue( boxId ) {
 }
 
 
+
+
 // reassign main value to every current insertion
 // and returns the value assigned
 function compareValue( oldValue, newValue ){
@@ -79,6 +88,8 @@ function compareValue( oldValue, newValue ){
 
   return oldValue;
 }
+
+
 
 
 // sets error message if the main value contains any alphabet and also sets flag
