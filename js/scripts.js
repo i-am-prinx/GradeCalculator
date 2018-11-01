@@ -1,72 +1,98 @@
 
-let errString;    // will be used to hold error string
+let errMsg;       // will be used to hold error string
 let subGrade;     // will hold subject grade after calculation
 let flag;         // if error input is entered, flag will be false else true
+let value;        // value retrieved from within a textbox ( main / old value)
+let tmpValue;     // value retrieved from within a textbox ( changing / new value)
 
 
 
-// Math input and Math label  actionListener
-document.getElementById("mathInput").oninput = function () {
-  main(
-    errString,      // passing the error String
-    subGrade,       // passing the subject Grade
-    flag,           // passing the flag
-    document.getElementById("mathInput").name,    // passing the subject name
-    document.getElementById("mathInput").value    // passing the subject value
-  )
+// computation will begin only if the text box is focused & blurred
+// whenever the text box is focused
+
+document.getElementById("mathInput").onfocus = function( ) {
+
+      // get whatever value that's in the text box
+      value = getBoxValue("mathInput");
+
+      // whenever there is an insertion
+      document.getElementById("mathInput").oninput = function( ){
+
+          // compare the value extracted from the text box with the old value
+          tmpValue = getBoxValue("mathInput");
+          value = compareValue(value, tmpValue);
+          console.log( "new value: " + value);      // testing ( test print )
+
+
+          // validate new value ( letters, alphabets, punctuations, symbols
+          // not allowed )
+          validateValue( value );
+          console.log( "grade is : " + subGrade );  // testing ( test print )
+
+
+
+          // set label based on the value of flag
+          // when flag is false, there is a error message
+          // when flag is true, there is no error message
+          setGradeLabel( "mathGrade" ) ;
+
+      }
+
+}
+
+// when the text box is blurred( no longer focused)
+document.getElementById("mathInput").onblur = function( ){
+
+      // get whatever value that's in the text box
+
 }
 
 
 
 
-// main method
-function main( errMsg, grade, flag, subName, value ){
 
-  // check if the value is empty or contains any alphabet
-  markAuth( value );
 
-  // set subject grade or errString ( Error String )
-  setGradeLabel(errMsg, grade, flag, subName )
+// get the value within the text box & return it.
+// Takes text box id as an argument
+
+function getBoxValue( boxId ) {
+  return document.getElementById(boxId).value;
 }
 
 
+// reassign main value to every current insertion
+// and returns the value assigned
+function compareValue( oldValue, newValue ){
+  if ( oldValue !== newValue ){
+    oldValue = newValue
+  }
+
+  return oldValue;
+}
 
 
+// sets error message if the main value contains any alphabet and also sets flag
+// to false, if the main value contains numeric type it sets the flag to true
+// and based on the value gotten, grade will be calculated
 
+function validateValue( mainValue ){
 
-
-/*
- * this helps to check if a value is an empty string
- * or if the value is an alphabet or any character
- * which will help to set our flag and also our errString
-*/
-
-function markAuth( v ){
-
-
-
-  // if a user leaves the field empty
-  // if the user enters an alphabet
-  if ( isNaN( v ) || v === "" ||  v.match(/^[a-z]$/) || v.match(/^[A-Z]$/) ){
-    console.log("enter mark **");
-    errString = "** enter mark **";
+  if ( mainValue.match(/[\a-z]/) || mainValue.match(/[\A-Z]/) || mainValue === ""){
     flag = false;
+    errMsg = "* invalid mark *"
   }
 
 
-
-  // if a user enters numeric value
-  if ( v.match(/[0-9]+/) ){
-    console.log("correct input ");
+  if ( mainValue.match(/\d+/)){
     flag = true;
-    setSubGrade( v );
+    calcForGrade(mainValue);
   }
+  
 }
 
 
 
-
-// receives the mark value inserted as a parameter and helps
+// receives the validated value inserted as a parameter and helps
 // to calculate grade
 
 // Marks              Points                  Grades
@@ -77,72 +103,50 @@ function markAuth( v ){
 // 40 - 44              1                       E
 //  0 - 39              0                       F
 
-function setSubGrade( v ) {
-
-      if ( v >= 75 && v <= 100 ){
-        console.log( v );
+function calcForGrade( value ) {
+      if ( value >= 75 && value <= 100 ){
         subGrade = "A";
       }
 
-      else if ( v >= 65 && v <= 74 ){
-        console.log( v );
+      else if ( value >= 65 && value <= 74 ){
         subGrade = "B";
       }
 
-      else if ( v >= 55 && v <= 64 ){
-        console.log( v );
+      else if ( value >= 55 && value <= 64 ){
         subGrade = "C";
       }
 
-      else if ( v >= 45 && v <= 54 ){
-        console.log( v );
+
+      else if ( value >= 45 && value <= 54 ){
         subGrade = "D";
       }
 
-      else if ( v >= 40 && v <= 44 ){
-        console.log( v );
+      else if ( value >= 40 && value <= 44 ){
         subGrade = "E";
       }
 
-      else if ( v >= 0 && v <= 39 ){
-        console.log( v );
+      else if (value >= 0 &&  value <= 39 ){
         subGrade = "F";
       }
-
 }
 
 
 
-// sets grade label based on the subject that mark is entered on
-// sets errString in grade field if incorrect input is passed as mark
-//
-function setGradeLabel( errMsg, grade, flg, subName ){
-    if (subName.toLocaleLowerCase( ) === "math") {
-      if ( flg === true ){
-          document.getElementById("mathGrade").innerHTML = grade
-      }
-      else if ( flg === false ){
-        document.getElementById("mathGrade").innerHTML = errMsg;
-      }
-    }
+// set label based on flag value ( flag value is set when we checked if the
+// value inserted into text box is an alphabet or numerics )
+// takes the labelId to be set, which also needs to be present within the
+// DOM. color stylings is also applied based on the condition
+
+function setGradeLabel( labelId ){
 
 
-    if (subName.toLocaleLowerCase( ) === "english") {
+  if ( !flag ){
+    document.getElementById(labelId).innerHTML = errMsg;
+    document.getElementById(labelId).style.color = "red";
+  }
+  else {
+    document.getElementById(labelId).innerHTML = subGrade;
+    document.getElementById(labelId).style.color = "black";
+  }
 
-    }
-
-
-    if (subName.toLocaleLowerCase( ) === "geography") {
-
-    }
-
-
-    if (subName.toLocaleLowerCase( ) === "science") {
-
-    }
-
-
-    if (subName.toLocaleLowerCase( ) === "economics") {
-
-    }
 }
