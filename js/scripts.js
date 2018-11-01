@@ -44,7 +44,13 @@ document.getElementById("mathInput").onfocus = function( ) {
 document.getElementById("mathInput").onblur = function( ){
 
       // get whatever value that's in the text box
-
+      // compare new inserted value with old value
+      // check if value contains any alphabet
+      // set grade label
+      tmpValue = getBoxValue("mathInput");
+      value = compareValue(value, tmpValue);
+      validateValue( value );
+      setGradeLabel( "mathGrade" ) ;
 }
 
 
@@ -84,10 +90,20 @@ function validateValue( mainValue ){
 
 
   if ( mainValue.match(/\d+/)){
-    flag = true;
-    calcForGrade(mainValue);
+
+    // only if value is a number, then calculate grade
+    if ( !(isNaN(mainValue)) ) {
+      flag = true;
+      calcForGrade(mainValue);
+    }
+
+    else {
+      flag = false;
+      errMsg = "* invalid mark *"
+    }
+
   }
-  
+
 }
 
 
