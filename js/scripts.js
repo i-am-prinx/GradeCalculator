@@ -4,6 +4,7 @@ let subGrade;     // will hold subject grade after calculation
 let flag;         // if error input is entered, flag will be false else true
 let value;        // value retrieved from within a textbox ( main / old value)
 let tmpValue;     // value retrieved from within a textbox ( changing / new value)
+let points = []   // points gotten for each subject grade will be inserted into this list
 
 
 
@@ -14,6 +15,7 @@ document.getElementById("mathInput").onfocus = function( ) {
 
       // get whatever value that's in the text box
       value = getBoxValue("mathInput");
+
 
       // whenever there is an insertion
       document.getElementById("mathInput").oninput = function( ){
@@ -51,6 +53,8 @@ document.getElementById("mathInput").onblur = function( ){
       value = compareValue(value, tmpValue);
       validateValue( value );
       setGradeLabel( "mathGrade" ) ;
+      getPoint("mathGrade");
+
 }
 
 
@@ -91,19 +95,17 @@ function validateValue( mainValue ){
 
   if ( mainValue.match(/\d+/)){
 
-    // only if value is a number, then calculate grade
-    if ( !(isNaN(mainValue)) ) {
-      flag = true;
-      calcForGrade(mainValue);
-    }
+        // only if value is a number, then calculate grade
+        if ( !(isNaN(mainValue)) ) {
+          flag = true;
+          calcForGrade(mainValue);
+        }
 
-    else {
-      flag = false;
-      errMsg = "* invalid mark *"
-    }
-
+        else {
+          flag = false;
+          errMsg = "* invalid mark *"
+        }
   }
-
 }
 
 
@@ -165,4 +167,21 @@ function setGradeLabel( labelId ){
     document.getElementById(labelId).style.color = "black";
   }
 
+}
+
+
+
+// adds  or point to list based on the grade gotten or error message
+// it takes the id of the grade label from which computations will be done on
+// the grade gotten
+
+function getPoint( gradeLabelId ) {
+  let grade = document.getElementById(gradeLabelId).innerHTML;
+  if ( grade === "A") points.unshift(5);
+  if ( grade === "B") points.unshift(4);
+  if ( grade === "C") points.unshift(3);
+  if ( grade === "D") points.unshift(2);
+  if ( grade === "E") points.unshift(1);
+  if ( grade === "F") points.unshift(0);
+  if ( grade === "* invalid mark *") points.shift( );
 }
