@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Grade Calculator</title>
+    <link rel="stylesheet" href="css/styles.css">
+  </head>
+  <body>
+
+    <div class="container">
+      <table border="">
+          <tr class="title-row">
+            <th colspan="4"> Grade Calculator </th>
+          </tr>
+          <tr id="t-head-wrapper">
+            <th class="t-head">Subject</th>
+            <th class="t-head">Units</th>
+            <th class="t-head">Marks</th>
+            <th class="t-head">Grades</th>
+          </tr>
+
+          <tr class="t-bodyWrapper">
+            <td>Maths</td>
+            <td>5</td>
+            <td>
+                <input type="text" name="math" value="" class="input" id="mathInput" autofocus />
+            </td>
+            <td class="subGrade" id="mathGrade"></td>
+          </tr>
+
+
+          <tr class="t-bodyWrapper">
+            <td>English</td>
+            <td>4</td>
+            <td> <input type="text" name="english" value="" class="input" id="engInput"/> </td>
+            <td class="subGrade" id="engGrade"></td>
+          </tr>
+
+
+          <tr class="t-bodyWrapper">
+            <td>Science</td>
+            <td>3</td>
+            <td> <input type="text" name="science" value="" class="input" id="sciInput" /> </td>
+            <td class="subGrade" id="sciGrade"></td>
+          </tr>
+
+          <tr class="t-bodyWrapper">
+            <td>Geography</td>
+            <td>3</td>
+            <td> <input type="text" name="geography" value="" class="input" id="geoInput"/> </td>
+            <td class="subGrade" id="geoGrade"></td>
+          </tr>
+
+          <tr class="t-bodyWrapper">
+            <td>Economics</td>
+            <td>2</td>
+            <td> <input type="text" name="economics" value="" class="input" id="ecoInput"/> </td>
+            <td class="subGrade" id="ecoGrade"></td>
+          </tr>
+
+          <tr class="t-footerWrapper" colspan="4">
+            <td class="t-footer" colspan="2">Total Units</td>
+          </tr>
+
+          <tr class="t-footerWrapper" colspan="4">
+            <td class="t-footer" colspan="2">G.P.A</td>
+          </tr>
+
+          <tr class="t-footerWrapper" colspan="4">
+            <td class="t-footer" colspan="2">CLASS</td>
+          </tr>
+      </table>
+    </div>
+
+    <script type="text/javascript" src="js/scripts.js"></script>
+  </body>
+</html>

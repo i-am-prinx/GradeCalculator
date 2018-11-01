@@ -1,0 +1,56 @@
+* {
+  font-size: 18px;
+  font-family: monospace;
+}
+
+body {
+  background-color: #ccc;
+  padding: 5rem;
+  height: 100%;
+}
+
+table {
+  margin: auto;
+  border-radius: 10px;
+  width: 80%;
+}
+
+
+.title-row {
+  line-height: 3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.9rem;
+}
+
+
+.title-row th {
+  font-size: 26px;
+  color: #fb5900;
+}
+
+.t-head {
+  color: blue;
+  font-weight: bold;
+  font-size: 22px;
+  padding: 0.7rem;
+}
+
+
+.t-bodyWrapper {
+  text-align: center;
+  line-height: 3rem;
+}
+
+
+.t-footerWrapper {
+  background-color: #ccddee;
+  text-align: right;
+  line-height: 3rem;
+  font-weight: bold;
+  border: transparent;
+}
+
+
+.input {
+  width: 70;
+}
