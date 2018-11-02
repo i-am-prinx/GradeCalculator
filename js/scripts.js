@@ -6,22 +6,73 @@ let value;        // value retrieved from within a textbox ( main / old value)
 let tmpValue;     // value retrieved from within a textbox ( changing / new value)
 let points = []   // points gotten for each subject grade will be inserted into this list
 
+// all grade id
+let graderId = [
+      "mathGrade", "engGrade", "geoGrade", "sciGrade", "ecoGrade"
+]
 
+
+let pointFlag;    // this will be used to trigger if points should be calculated or not
+
+
+
+
+//***************************** MATH SUBJECT COMPUTATION
 
 // computation will begin only if the text box is focused & blurred
 // whenever the text box is focused
 
 document.getElementById("mathInput").onfocus = function( ) {
-      main( "mathInput", "mathGrade")
+      main( "mathInput", "mathGrade");
 }
 
 // when the text box is blurred( no longer focused)
 document.getElementById("mathInput").onblur = function( ){
       // set point based on grade gotten
-      main("mathInput", "mathGrade")
-      getPoint("mathGrade");
-
+      main("mathInput", "mathGrade");
+      pointScored( graderId )
 }
+
+
+document.getElementById("geoInput").onfocus = function( ){
+      main( "geoInput", "geoGrade");
+}
+
+document.getElementById("geoInput").onblur = function( ){
+      main("geoInput", "geoGrade");
+      pointScored( graderId )
+}
+
+
+document.getElementById("ecoInput").onfocus = function( ){
+      main( "ecoInput", "ecoGrade");
+}
+
+document.getElementById("ecoInput").onblur = function( ){
+      main( "ecoInput", "ecoGrade");
+      pointScored( graderId );
+}
+
+
+document.getElementById("sciInput").onfocus = function( ){
+      main( "sciInput", "sciGrade");
+}
+
+document.getElementById("sciInput").onblur = function( ){
+      main( "sciInput", "sciGrade");
+      pointScored( graderId )
+}
+
+
+document.getElementById("engInput").onfocus = function( ){
+      main( "engInput", "engGrade");
+}
+
+document.getElementById("engInput").onblur = function( ){
+      main( "engInput", "engGrade");
+      pointScored( graderId )
+}
+
 
 
 
@@ -182,17 +233,69 @@ function setGradeLabel( labelId ){
 
 
 
-// adds  or point to list based on the grade gotten or error message
-// it takes the id of the grade label from which computations will be done on
-// the grade gotten
 
-function getPoint( gradeLabelId ) {
-  let grade = document.getElementById(gradeLabelId).innerHTML;
-  if ( grade === "A") points.unshift(5);
-  if ( grade === "B") points.unshift(4);
-  if ( grade === "C") points.unshift(3);
-  if ( grade === "D") points.unshift(2);
-  if ( grade === "E") points.unshift(1);
-  if ( grade === "F") points.unshift(0);
-  if ( grade === "* invalid mark *") points.shift( );
+// This triggers whether or not points will be calculated as it sets the
+// pointFlag to true or false... if one false is found then there will be
+// no calculation for points.
+// takes a list as an argument... the list taken represent the ids of all the
+// field that grade can be outputted on.
+
+function pointTrigger( graderId ) {
+      let f = true;
+      let counter = 0;
+      while ( f ){
+          console.log("trigger is true")
+          graderId.forEach(( id ) => {
+              let graderContent = document.getElementById(id).innerHTML;
+
+              if (graderContent !== "* invalid mark *" && graderContent !== ""){
+                pointFlag = true
+              }
+
+              else {
+                pointFlag = false;
+                f = false;
+              }
+
+              counter++;
+         });
+
+         if ( f === false ){
+           console.log("trigger is false")
+           break;
+         }
+
+         else if ( f !== false && counter === graderId.length){
+           console.log("grade validated");
+           break;
+         }
+      }
+}
+
+
+
+// adds point to list based on the grade gotten. it takes the list of grader id
+// from which computations will be done on the grade gotten
+
+function getPoint( graderId ){
+    if ( pointFlag ){
+        graderId.forEach(( id ) => {
+            let grade = document.getElementById(id).innerHTML;
+            if ( grade === "A") points.unshift(5);
+            if ( grade === "B") points.unshift(4);
+            if ( grade === "C") points.unshift(3);
+            if ( grade === "D") points.unshift(2);
+            if ( grade === "E") points.unshift(1);
+            if ( grade === "F") points.unshift(0);
+        });
+    }
+}
+
+
+
+// main method for point calculation. takes gradeid list as a parameter
+
+function pointScored( graderId ){
+  pointTrigger(graderId);
+  getPoint(graderId);
 }
