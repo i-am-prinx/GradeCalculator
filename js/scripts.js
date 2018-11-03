@@ -16,59 +16,31 @@ let graderId = [
 let pointFlag;
 
 
+/***** computation will begin only if the text box is focused & blurred *****/
 
-
-//***************************** MATH SUBJECT COMPUTATION
-
-// computation will begin only if the text box is focused & blurred
-// whenever the text box is focused
-
-document.getElementById("mathInput").onfocus = function( ) {
-      main( "mathInput", "mathGrade");
-}
-
-// when the text box is blurred( no longer focused)
-document.getElementById("mathInput").onblur = function( ){
-      // set point based on grade gotten
-      main("mathInput", "mathGrade");
-      pointScored( graderId )
-}
+// InputBox Event for Math Subject
+document.getElementById("mathInput").onfocus = function( ){ main( "mathInput", "mathGrade"); }
+document.getElementById("mathInput").onblur = function( ){ main("mathInput", "mathGrade");}
 
 
 // InputBox Event for Geography Subject
 document.getElementById("geoInput").onfocus = function( ){ main( "geoInput", "geoGrade"); }
-
-document.getElementById("geoInput").onblur = function( ){
-      main("geoInput", "geoGrade");
-      pointScored( graderId )
-}
+document.getElementById("geoInput").onblur = function( ){  main("geoInput", "geoGrade");  }
 
 
 // InputBox Event for Economics Subject
 document.getElementById("ecoInput").onfocus = function( ){ main( "ecoInput", "ecoGrade"); }
-
-document.getElementById("ecoInput").onblur = function( ){
-      main( "ecoInput", "ecoGrade");
-      pointScored( graderId );
-}
+document.getElementById("ecoInput").onblur = function( ){  main( "ecoInput", "ecoGrade"); }
 
 
 // InputBox Event for Science Subject
 document.getElementById("sciInput").onfocus = function( ){ main( "sciInput", "sciGrade"); }
-
-document.getElementById("sciInput").onblur = function( ){
-      main( "sciInput", "sciGrade");
-      pointScored( graderId )
-}
+document.getElementById("sciInput").onblur = function( ){  main( "sciInput", "sciGrade"); }
 
 
 // InputBox Event for English Subject
 document.getElementById("engInput").onfocus = function( ){ main( "engInput", "engGrade"); }
-
-document.getElementById("engInput").onblur = function( ){
-      main( "engInput", "engGrade");
-      pointScored( graderId )
-}
+document.getElementById("engInput").onblur = function( ){  main( "engInput", "engGrade"); }
 
 
 
@@ -108,7 +80,7 @@ function main( subInputId, subGradeId){
           // when flag is false, there is a error message
           // when flag is true, there is no error message
           setGradeLabel( subGradeId ) ;
-
+          pointScored( graderId );
       }
 }
 
@@ -285,6 +257,9 @@ function getPoint( graderId ){
             if ( grade === "F") points.unshift(0);
         });
     }
+
+    // sets total points in DOM
+    setTotalPoints( );
 }
 
 
@@ -293,4 +268,24 @@ function getPoint( graderId ){
 function pointScored( graderId ){
   pointTrigger(graderId);
   getPoint(graderId);
+}
+
+// helps to sum all the values in the points gotten this will be used as a
+// callback with the builtin reduce function
+const sumPointsGotten = (accumulator, newValue) => accumulator + newValue;
+
+
+
+// sets the total points gotten to DOM only if there are points
+
+function setTotalPoints (  ){
+      console.log("setting points to DOM");     // testing ( log testing )
+      if (points.length > 0 ){
+          document.getElementById("totalPoints").innerHTML = points.reduce(
+            sumPointsGotten
+          );
+      }
+      else {
+        document.getElementById("totalPoints").innerHTML = "";
+      }
 }
