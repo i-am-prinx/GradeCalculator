@@ -264,6 +264,9 @@ function getPoint( graderId ){
 
     // calculates and set gpa ( Grade Point Average )
     calculateNinsertGPA( );
+
+    // class rating
+    rateNinsertClass( );
 }
 
 
@@ -298,10 +301,32 @@ function setTotalPoints (  ){
 
 // calculates GPA and insert the value to DOM
 function calculateNinsertGPA( ){
-    p = document.getElementById("totalPoints").innerHTML;
+    let p = document.getElementById("totalPoints").innerHTML;
     if ( p  != ""){
       document.getElementById("gpaRating").innerHTML = parseInt(p) / graderId.length;
     } else {
       document.getElementById("gpaRating").innerHTML = "";
     }
+}
+
+
+
+// help to calculate and _insert the class rating of GPA
+
+function rateNinsertClass( ) {
+  let classString;
+  let g = document.getElementById("gpaRating").innerHTML;
+  if( g != ""){
+    g = parseInt(g);
+    if ( g < 1.5 )  classString = "Advice to withdraw";
+    else if ( g >= 1.5 && g <= 1.99 ) classString = "Pass";
+    else if ( g >= 2.0 && g <= 2.49 ) classString = "Third Class";
+    else if ( g >= 2.5 && g <= 3.49 ) classString = "Second Class Lower";
+    else if ( g >= 3.5 && g <= 4.49 ) classString = "Second Class Upper";
+    else if ( g >= 4.5 && g <= 5 ) classString = "First Class";
+    document.getElementById("classRating").innerHTML = classString;
+  }
+  else {
+    document.getElementById("classRating").innerHTML = "";
+  }
 }
