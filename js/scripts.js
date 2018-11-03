@@ -9,7 +9,7 @@ let points = []   // points gotten for each subject grade will be inserted into 
 // all grade id
 let graderId = [
       "mathGrade", "engGrade", "geoGrade", "sciGrade", "ecoGrade"
-]
+];
 
 
 // this will be used to trigger if points should be calculated or not
@@ -118,7 +118,7 @@ function compareValue( oldValue, newValue ){
 
 function validateValue( mainValue ){
 
-  if ( mainValue.match(/[\a-z]/) || mainValue.match(/[\A-Z]/) || mainValue === ""){
+  if ( mainValue.match(/[\a-z]/) || mainValue.match(/[\A-Z]/) || mainValue === " "){
     flag = false;
     errMsg = "* invalid mark *"
   }
@@ -191,12 +191,13 @@ function setGradeLabel( labelId ){
   if ( !flag ){
     document.getElementById(labelId).innerHTML = errMsg;
     document.getElementById(labelId).style.color = "red";
+    document.getElementById(labelId).style.fontSize = "12px";
   }
   else {
     document.getElementById(labelId).innerHTML = subGrade;
     document.getElementById(labelId).style.color = "black";
+    document.getElementById(labelId).style.fontSize = "inherit";
   }
-
 }
 
 
@@ -260,6 +261,9 @@ function getPoint( graderId ){
 
     // sets total points in DOM
     setTotalPoints( );
+
+    // calculates and set gpa ( Grade Point Average )
+    calculateNinsertGPA( );
 }
 
 
@@ -270,14 +274,15 @@ function pointScored( graderId ){
   getPoint(graderId);
 }
 
+
+
 // helps to sum all the values in the points gotten this will be used as a
-// callback with the builtin reduce function
+// callback within the builtin reduce function
 const sumPointsGotten = (accumulator, newValue) => accumulator + newValue;
 
 
 
 // sets the total points gotten to DOM only if there are points
-
 function setTotalPoints (  ){
       console.log("setting points to DOM");     // testing ( log testing )
       if (points.length > 0 ){
@@ -288,4 +293,15 @@ function setTotalPoints (  ){
       else {
         document.getElementById("totalPoints").innerHTML = "";
       }
+}
+
+
+// calculates GPA and insert the value to DOM
+function calculateNinsertGPA( ){
+    p = document.getElementById("totalPoints").innerHTML;
+    if ( p  != ""){
+      document.getElementById("gpaRating").innerHTML = parseInt(p) / graderId.length;
+    } else {
+      document.getElementById("gpaRating").innerHTML = "";
+    }
 }
