@@ -35,9 +35,8 @@ document.getElementById("mathInput").onblur = function( ){
 }
 
 
-document.getElementById("geoInput").onfocus = function( ){
-      main( "geoInput", "geoGrade");
-}
+// InputBox Event for Geography Subject
+document.getElementById("geoInput").onfocus = function( ){ main( "geoInput", "geoGrade"); }
 
 document.getElementById("geoInput").onblur = function( ){
       main("geoInput", "geoGrade");
@@ -45,9 +44,8 @@ document.getElementById("geoInput").onblur = function( ){
 }
 
 
-document.getElementById("ecoInput").onfocus = function( ){
-      main( "ecoInput", "ecoGrade");
-}
+// InputBox Event for Economics Subject
+document.getElementById("ecoInput").onfocus = function( ){ main( "ecoInput", "ecoGrade"); }
 
 document.getElementById("ecoInput").onblur = function( ){
       main( "ecoInput", "ecoGrade");
@@ -55,9 +53,8 @@ document.getElementById("ecoInput").onblur = function( ){
 }
 
 
-document.getElementById("sciInput").onfocus = function( ){
-      main( "sciInput", "sciGrade");
-}
+// InputBox Event for Science Subject
+document.getElementById("sciInput").onfocus = function( ){ main( "sciInput", "sciGrade"); }
 
 document.getElementById("sciInput").onblur = function( ){
       main( "sciInput", "sciGrade");
@@ -65,9 +62,8 @@ document.getElementById("sciInput").onblur = function( ){
 }
 
 
-document.getElementById("engInput").onfocus = function( ){
-      main( "engInput", "engGrade");
-}
+// InputBox Event for English Subject
+document.getElementById("engInput").onfocus = function( ){ main( "engInput", "engGrade"); }
 
 document.getElementById("engInput").onblur = function( ){
       main( "engInput", "engGrade");
@@ -220,7 +216,6 @@ function calcForGrade( value ) {
 
 function setGradeLabel( labelId ){
 
-
   if ( !flag ){
     document.getElementById(labelId).innerHTML = errMsg;
     document.getElementById(labelId).style.color = "red";
@@ -242,10 +237,15 @@ function setGradeLabel( labelId ){
 // field that grade can be outputted on.
 
 function pointTrigger( graderId ) {
+
+      // this will be set to be true each time an input box is focused or blurred
+      // this needs to be so bcux of the computation below
       pointFlag = true;
+
       graderId.forEach(( id ) => {
           let graderContent = document.getElementById(id).innerHTML;
 
+          // computation will only be handled only if the condition is true
           if (pointFlag === true ){
               if (graderContent !== "* invalid mark *" && graderContent !== ""){
                 pointFlag = true
@@ -267,7 +267,13 @@ function pointTrigger( graderId ) {
 // from which computations will be done on the grade gotten
 
 function getPoint( graderId ){
+
+    // remove all items in list before inserting points if excluded this
+    // new points will be added to list each time a user focuses or blur an
+    // input box.
     points = [ ];
+
+    // compute for grade based on the mark gotten
     if ( pointFlag ){
         graderId.forEach(( id ) => {
             let grade = document.getElementById(id).innerHTML;
@@ -284,7 +290,6 @@ function getPoint( graderId ){
 
 
 // main method for point calculation. takes gradeid list as a parameter
-
 function pointScored( graderId ){
   pointTrigger(graderId);
   getPoint(graderId);
