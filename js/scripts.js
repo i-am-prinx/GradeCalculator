@@ -12,7 +12,8 @@ let graderId = [
 ]
 
 
-let pointFlag;    // this will be used to trigger if points should be calculated or not
+// this will be used to trigger if points should be calculated or not
+let pointFlag;
 
 
 
@@ -241,35 +242,23 @@ function setGradeLabel( labelId ){
 // field that grade can be outputted on.
 
 function pointTrigger( graderId ) {
-      let f = true;
-      let counter = 0;
-      while ( f ){
-          console.log("trigger is true")
-          graderId.forEach(( id ) => {
-              let graderContent = document.getElementById(id).innerHTML;
+      pointFlag = true;
+      graderId.forEach(( id ) => {
+          let graderContent = document.getElementById(id).innerHTML;
 
+          if (pointFlag === true ){
               if (graderContent !== "* invalid mark *" && graderContent !== ""){
                 pointFlag = true
               }
 
               else {
+                console.log("trigger is false");
                 pointFlag = false;
+                points = [ ];
                 f = false;
               }
-
-              counter++;
-         });
-
-         if ( f === false ){
-           console.log("trigger is false")
-           break;
-         }
-
-         else if ( f !== false && counter === graderId.length){
-           console.log("grade validated");
-           break;
-         }
-      }
+          }
+     });
 }
 
 
@@ -278,6 +267,7 @@ function pointTrigger( graderId ) {
 // from which computations will be done on the grade gotten
 
 function getPoint( graderId ){
+    points = [ ];
     if ( pointFlag ){
         graderId.forEach(( id ) => {
             let grade = document.getElementById(id).innerHTML;
