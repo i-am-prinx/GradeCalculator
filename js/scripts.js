@@ -6,11 +6,26 @@ let value;        // value retrieved from within a textbox ( main / old value)
 let tmpValue;     // value retrieved from within a textbox ( changing / new value)
 let points = []   // points gotten for each subject grade will be inserted into this list
 
-// all grade id
-let graderId = [
-      "mathGrade", "engGrade", "geoGrade", "sciGrade", "ecoGrade"
-];
 
+/*
+   subject abbreviations are been used because we need to get the id of a
+   particular subject and the unit for gpa calculation. To do this dynamically
+   we had to give our grade id and unit id a name that can be used dynamically.
+
+
+   for example:::
+      Subject ( Maths )       ---   GradeId( mathGrade )  ------ unitId( mathUnit )
+
+
+  all we need is the name of the subject and when we need the gradeId we concatenate
+  'Grade' to the name and when we need the unitId we concatenate ( Unit ).
+*/
+
+
+// all subject abbreviations
+let graderId = [
+      "math", "eng", "geo", "sci", "eco",
+];
 
 // this will be used to trigger if points should be calculated or not
 let pointFlag;
@@ -20,7 +35,7 @@ let pointFlag;
 
 // InputBox Event for Math Subject
 document.getElementById("mathInput").onfocus = function( ){ main( "mathInput", "mathGrade"); }
-document.getElementById("mathInput").onblur = function( ){ main("mathInput", "mathGrade");}
+document.getElementById("mathInput").onblur = function( ){ main("mathInput", "mathGrade"); }
 
 
 // InputBox Event for Geography Subject
@@ -54,7 +69,7 @@ document.getElementById("engInput").onblur = function( ){  main( "engInput", "en
 // requires subject input id, and subject grade label
 // required id should be present or available within DOM
 
-function main( subInputId, subGradeId){
+function main( subInputId, subGradeId ){
 
       // get whatever value that's in the text box
       value = getBoxValue(subInputId);
@@ -120,7 +135,7 @@ function validateValue( mainValue ){
 
   if ( mainValue.match(/[\a-z]/) ||
        mainValue.match(/[\A-Z]/) ||
-       mainValue === " " || mainValue === "")
+       mainValue === " ")
   {
         flag = false;
         errMsg = "* invalid mark *"
@@ -219,7 +234,7 @@ function pointTrigger( graderId ) {
       pointFlag = true;
 
       graderId.forEach(( id ) => {
-          let graderContent = document.getElementById(id).innerHTML;
+          let graderContent = document.getElementById(id + "Grade").innerHTML;
 
           // computation will only be handled only if the condition is true
           if (pointFlag === true ){
@@ -252,13 +267,13 @@ function getPoint( graderId ){
     // compute for grade based on the mark gotten
     if ( pointFlag ){
         graderId.forEach(( id ) => {
-            let grade = document.getElementById(id).innerHTML;
-            if ( grade === "A") points.unshift(5);
-            if ( grade === "B") points.unshift(4);
-            if ( grade === "C") points.unshift(3);
-            if ( grade === "D") points.unshift(2);
-            if ( grade === "E") points.unshift(1);
-            if ( grade === "F") points.unshift(0);
+            let grade = document.getElementById(id + "Grade").innerHTML;
+            if ( grade === "A") points.unshift(5 * document.getElementById(id +"Unit").innerHTML);
+            if ( grade === "B") points.unshift(4 * document.getElementById(id +"Unit").innerHTML);
+            if ( grade === "C") points.unshift(3 * document.getElementById(id +"Unit").innerHTML);
+            if ( grade === "D") points.unshift(2 * document.getElementById(id +"Unit").innerHTML);
+            if ( grade === "E") points.unshift(1 * document.getElementById(id +"Unit").innerHTML);
+            if ( grade === "F") points.unshift(0 * document.getElementById(id +"Unit").innerHTML);
         });
     }
 
