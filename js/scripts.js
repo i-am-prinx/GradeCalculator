@@ -340,7 +340,11 @@ function setTotalPoints (  ){
 function calculateNinsertGPA( ){
     let p = document.getElementById("totalPoints").innerHTML;
     if ( p  != ""){
-      document.getElementById("gpaRating").innerHTML = parseInt(p) / totalUnit;
+      // round to 2 decimal place
+      let value = Math.floor((parseInt(p) / totalUnit) * 100) / 100;
+
+      // output to dom
+      document.getElementById("gpaRating").innerHTML = value;
     } else {
       document.getElementById("gpaRating").innerHTML = "";
     }
