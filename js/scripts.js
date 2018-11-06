@@ -118,9 +118,12 @@ function compareValue( oldValue, newValue ){
 
 function validateValue( mainValue ){
 
-  if ( mainValue.match(/[\a-z]/) || mainValue.match(/[\A-Z]/) || mainValue === " "){
-    flag = false;
-    errMsg = "* invalid mark *"
+  if ( mainValue.match(/[\a-z]/) ||
+       mainValue.match(/[\A-Z]/) ||
+       mainValue === " " || mainValue === "")
+  {
+        flag = false;
+        errMsg = "* invalid mark *"
   }
 
 
