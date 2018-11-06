@@ -23,9 +23,15 @@ let points = []   // points gotten for each subject grade will be inserted into 
 
 
 // all subject abbreviations
-let graderId = [
+let subAbbr = [
       "math", "eng", "geo", "sci", "eco",
 ];
+
+
+// summation of all subject units
+let totalUnit;
+
+
 
 // this will be used to trigger if points should be calculated or not
 let pointFlag;
@@ -74,6 +80,9 @@ function main( subInputId, subGradeId ){
       // get whatever value that's in the text box
       value = getBoxValue(subInputId);
 
+      // assigning total units
+      totalUnit = getTotalUnit(subAbbr);
+
 
       // whenever there is an insertion
       document.getElementById(subInputId).oninput = function( ){
@@ -95,7 +104,7 @@ function main( subInputId, subGradeId ){
           // when flag is false, there is a error message
           // when flag is true, there is no error message
           setGradeLabel( subGradeId ) ;
-          pointScored( graderId );
+          pointScored( subAbbr );
       }
 }
 
@@ -227,13 +236,13 @@ function setGradeLabel( labelId ){
 // takes a list as an argument... the list taken represent the ids of all the
 // field that grade can be outputted on.
 
-function pointTrigger( graderId ) {
+function pointTrigger( subAbbr ) {
 
       // this will be set to be true each time an input box is focused or blurred
       // this needs to be so bcux of the computation below
       pointFlag = true;
 
-      graderId.forEach(( id ) => {
+      subAbbr.forEach(( id ) => {
           let graderContent = document.getElementById(id + "Grade").innerHTML;
 
           // computation will only be handled only if the condition is true
@@ -257,7 +266,7 @@ function pointTrigger( graderId ) {
 // adds point to list based on the grade gotten. it takes the list of grader id
 // from which computations will be done on the grade gotten
 
-function getPoint( graderId ){
+function getPoint( subAbbr ){
 
     // remove all items in list before inserting points if excluded this
     // new points will be added to list each time a user focuses or blur an
@@ -266,7 +275,7 @@ function getPoint( graderId ){
 
     // compute for grade based on the mark gotten
     if ( pointFlag ){
-        graderId.forEach(( id ) => {
+        subAbbr.forEach(( id ) => {
             let grade = document.getElementById(id + "Grade").innerHTML;
             if ( grade === "A") points.unshift(5 * document.getElementById(id +"Unit").innerHTML);
             if ( grade === "B") points.unshift(4 * document.getElementById(id +"Unit").innerHTML);
@@ -290,16 +299,28 @@ function getPoint( graderId ){
 
 
 // main method for point calculation. takes gradeid list as a parameter
-function pointScored( graderId ){
-  pointTrigger(graderId);
-  getPoint(graderId);
+function pointScored( subAbbr ){
+  pointTrigger(subAbbr);
+  getPoint(subAbbr);
 }
 
 
 
 // helps to sum all the values in the points gotten this will be used as a
 // callback within the builtin reduce function
-const sumPointsGotten = (accumulator, newValue) => accumulator + newValue;
+const sumFunc = (accumulator, newValue) => accumulator + newValue;
+
+
+
+//
+function getTotalUnit( subList ) {
+  let units = []
+  subList.forEach((id) => {
+    units.unshift(parseInt(document.getElementById(id+"Unit").innerHTML))
+  })
+
+  return units.reduce( sumFunc )
+}
 
 
 
@@ -307,9 +328,7 @@ const sumPointsGotten = (accumulator, newValue) => accumulator + newValue;
 function setTotalPoints (  ){
       console.log("setting points to DOM");     // testing ( log testing )
       if (points.length > 0 ){
-          document.getElementById("totalPoints").innerHTML = points.reduce(
-            sumPointsGotten
-          );
+          document.getElementById("totalPoints").innerHTML = points.reduce( sumFunc );
       }
       else {
         document.getElementById("totalPoints").innerHTML = "";
@@ -321,7 +340,7 @@ function setTotalPoints (  ){
 function calculateNinsertGPA( ){
     let p = document.getElementById("totalPoints").innerHTML;
     if ( p  != ""){
-      document.getElementById("gpaRating").innerHTML = parseInt(p) / graderId.length;
+      document.getElementById("gpaRating").innerHTML = parseInt(p) / totalUnit;
     } else {
       document.getElementById("gpaRating").innerHTML = "";
     }
