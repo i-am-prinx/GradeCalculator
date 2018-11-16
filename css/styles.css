@@ -16,6 +16,19 @@ table {
   box-shadow: 2px 2px 120px #6f6262;
 }
 
+.wrapper {
+  display: flex;
+  flex-direction: 'row';
+  flex: 1;
+}
+
+.container { flex: 1; }
+.chart {
+  flex: 1;
+  padding: 0.1rem;
+  background-color: #1D1F20;
+}
+
 
 td, th {
   border: 4px solid #dddddd;
@@ -25,7 +38,6 @@ td, th {
 tr:nth-child(even) {
     background-color: #dddddd;
 }
-
 
 td > small {
   font-size: 12px;
@@ -49,14 +61,14 @@ input[type="text"] {
 
 
 .title-row th {
-  font-size: 26px;
+  font-size: 22px;
+  font-weight: bold;
   color: #fb5900;
 }
 
 .t-head {
   color: blue;
-  font-weight: bold;
-  font-size: 22px;
+  font-size: 15px;
   padding: 0.7rem;
 }
 

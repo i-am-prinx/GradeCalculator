@@ -1,11 +1,12 @@
 
+
 let errMsg;       // will be used to hold error string
 let subGrade;     // will hold subject grade after calculation
 let flag;         // if error input is entered, flag will be false else true
 let value;        // value retrieved from within a textbox ( main / old value)
 let tmpValue;     // value retrieved from within a textbox ( changing / new value)
 let points = []   // points gotten for each subject grade will be inserted into this list
-
+let chartData = [ ] // keeps dataset for drawn chart
 
 /*
    subject abbreviations are been used because we need to get the id of a
@@ -221,6 +222,7 @@ function setGradeLabel( labelId ){
     document.getElementById(labelId).style.fontSize = "12px";
   }
   else {
+    getDataNPlotChart( );
     document.getElementById(labelId).innerHTML = subGrade;
     document.getElementById(labelId).style.color = "black";
     document.getElementById(labelId).style.fontSize = "inherit";
@@ -298,7 +300,7 @@ function getPoint( subAbbr ){
 
 
 
-// main method for point calculation. takes gradeid list as a parameter
+// main method for point calculation. takes subject abbreviation list as a parameter
 function pointScored( subAbbr ){
   pointTrigger(subAbbr);
   getPoint(subAbbr);
@@ -341,7 +343,8 @@ function calculateNinsertGPA( ){
     let p = document.getElementById("totalPoints").innerHTML;
     if ( p  != ""){
       // round to 2 decimal place
-      let value = Math.floor((parseInt(p) / totalUnit) * 100) / 100;
+      let value = parseInt(p) / totalUnit;
+      value = value.toFixed(1);
 
       // output to dom
       document.getElementById("gpaRating").innerHTML = value;
@@ -370,4 +373,73 @@ function rateNinsertClass( ) {
   else {
     document.getElementById("classRating").innerHTML = "";
   }
+}
+
+
+
+function getDataNPlotChart( ){
+  chartData = [ ]
+
+  // add the value in all subject input field to chartData list only if there
+  // is a value not empty string. if there is an empty string, instead of
+  // inserting the empty string, insert 0.
+
+  subAbbr.forEach( i => {
+        chartData.unshift(
+              parseInt(
+                  // check if the value is a negative number, if it is instead of
+                  // inserting it, insert 0 instead
+                  document.getElementById(i + "Input").value < 0 ?
+                    0 : document.getElementById(i + "Input").value
+              )
+        )
+  });
+
+  plotChart( chartData.reverse( ) );
+}
+
+
+
+// helps to plot chart for inputed data
+function plotChart( cdata ){
+    let ctx = document.getElementById("myChart");
+    var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+
+          labels: subAbbr,
+
+          datasets: [{
+              label: "Subject",
+              data: cdata,
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.5)',
+                  'rgba(54, 162, 235, 0.5)',
+                  'rgba(255, 206, 86, 0.5)',
+                  'rgba(75, 192, 192, 0.5)',
+                  'rgba(153, 102, 255, 0.5)',
+                  'rgba(255, 159, 64, 0.5)'
+              ],
+              borderColor: [
+                  'rgba(255,99,132,1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 2
+          }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+     }
+  });
 }
