@@ -5,13 +5,13 @@
 
 body {
   background-color: #ccc;
-  padding: 2rem;
+  padding: 1rem;
   height: 100%;
 }
 
 table {
   width: 80%;
-  margin: auto;
+  margin-left: 2rem;
   border-collapse: collapse;
   box-shadow: 2px 2px 120px #6f6262;
 }
@@ -25,9 +25,11 @@ table {
 .container { flex: 1; }
 .chart {
   flex: 1;
-  padding: 0.1rem;
+  width: 100%;
+  padding: 3rem;
   background-color: #1D1F20;
 }
+
 
 
 td, th {
@@ -96,4 +98,16 @@ input[type="text"] {
 #classRating {
   font-weight: bold;
   color: tomato;
+}
+
+
+
+@media (max-width: 920px)  {
+  .wrapper {
+    flex-direction: column;
+  }
+
+  .chart {
+    margin-top: 30px;
+  }
 }

@@ -395,14 +395,19 @@ function getDataNPlotChart( ){
         )
   });
 
-  plotChart( chartData.reverse( ) );
+  configureChart( chartData.reverse( ) );
 }
 
 
 
-// helps to plot chart for inputed data
-function plotChart( cdata ){
-    let ctx = document.getElementById("myChart");
+// configures the chart appearance and response to included data
+function configureChart( cdata ){
+    let ctx = document.getElementById("myChart").getContext('2d');
+
+    Chart.defaults.global.defaultFontFamily = 'Lato';
+    Chart.defaults.global.defaultFontSize= 18;
+    Chart.defaults.global.defaultFontColor = '#ccc';
+
     var myChart = new Chart(ctx, {
       type: 'bar',
       data: {
@@ -428,18 +433,35 @@ function plotChart( cdata ){
                   'rgba(153, 102, 255, 1)',
                   'rgba(255, 159, 64, 1)'
               ],
-              borderWidth: 2
+              borderWidth: 1,
+              borderColor: "#eee",
+              hoverBorderWidth: 3,
+              hoverBorderColor: "#fff"
           }]
       },
       options: {
-        maintainAspectRatio: false,
+        responsive: true,
+
         scales: {
             yAxes: [{
+                display: false,
                 ticks: {
-                    beginAtZero:true
+                    // yAxes should only display whole numbers
+                    // even when it is hovered on
+                    callback: function(value, index, values) {
+                        return parseInt(value);
+                    }
                 }
             }]
-        }
+        },
+
+        title: {
+          display: true,
+          text: 'Grade Point Average Chart',
+          fontSize: 25,
+        },
+
+        legend: { display: false },
      }
   });
 }
